@@ -1,0 +1,115 @@
+@startuml
+
+package 用户域 <<Database>> {
+
+    entity financial_user {
+      + id : bigint # 用户
+      --
+      * type : varchar(64) # 用户类型
+      * name : varchar(64) # 用户名称
+    }
+
+    entity financial_user_robot {
+      + id : bigint # 机器人用户
+      --
+      # user_id : bigint
+      # symbol_id : bigint
+    }
+
+    entity financial_account {
+      + id : bigint # 账号
+      --
+      # user_id : bigint
+      --
+      * type : varchar(64) # 类型
+    }
+
+    entity financial_account_login {
+      + id : bigint # 登陆账户
+      --
+      # account_id : bigint
+      * login_account : varchar(64) # 登陆账号
+      * password : varchar(64) # 密码
+      access_token : varchar(128) # 是否已登陆
+      expire_time : datetime # 登陆过期时间
+    }
+}
+
+package 交易域 <<Database>> {
+    entity financial_account_trade {
+      + id : bigint # 交易账户
+      --
+      # account_id : bigint
+      * balance : decimal(20, 4) # 余额
+      * frozen_fund : decimal(20, 4) # 冻结的资金
+    }
+
+    entity financial_order {
+      + id : bigint # 委托单
+      --
+      # account_trade_id : bigint
+      # symbol_id : bigint
+      quantity : bigint # 委托数量
+      price : decimal(20, 4) # 委托价格
+      side : varchar(64) # 交易方向
+      type : varchar(64) # 交易类型
+      completed_quantity : bigint # 成交数量
+      canceled_quantity : bigint # 撤销数量
+    }
+
+    entity financial_hold_position {
+      + id : bigint # 持有头寸
+      --
+      # account_trade_id : bigint
+      # symbol_id : bigint
+      * quantity : bigint # 持有头寸数量
+      * frozen_quantity : bigint # 冻结的头寸数量
+    }
+
+    entity financial_symbol {
+      + id : bigint # 标的
+      --
+      symbol : varchar(64) # 标的编码
+    }
+
+    entity financial_trade_voucher {
+      + id : bigint # 交易凭证
+      --
+      # maker_id : bigint # 挂单 order_id
+      # take_id : bigint # 吃单 order_id
+      # symbol_id : bigint
+      * taker_side : varchar(64) # 吃单的买卖方向
+      * amount : bigint # 成交数量
+      * price : decimal(20, 4) # 成交价格
+      * trade_time : 成交时间
+    }
+
+    entity financial_market_k_line {
+      + id : bigint # 行情
+      --
+      # symbol_id : bigint
+      * level : varchar(64) # 级别
+      * time : datetime # 成交时间
+      * open : decimal(20, 4) # 开盘价
+      * close : decimal(20, 4) # 收盘价
+      * high : decimal(20, 4) # 最高价
+      * low : decimal(20, 4) # 最低价
+
+      * volume : bigint # 成交量
+    }
+}
+
+financial_user ||--o{ financial_account
+financial_user ||--o{ financial_user_robot
+financial_symbol ||--o{ financial_user_robot
+financial_account ||--|| financial_account_trade
+financial_account ||--|| financial_account_login
+financial_account_trade ||--o{ financial_order
+financial_account_trade ||--o{ financial_hold_position
+financial_symbol ||--o{ financial_order
+financial_symbol ||--o{ financial_hold_position
+financial_order }|--|{ financial_trade_voucher
+financial_symbol ||--o{ financial_trade_voucher
+financial_symbol ||--o{ financial_market_k_line
+
+@enduml

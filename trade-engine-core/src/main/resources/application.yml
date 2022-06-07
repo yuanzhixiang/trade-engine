@@ -1,0 +1,19 @@
+server:
+  port: 80
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: <url>
+    username: <username>
+    password: <password>
+    hikari:
+#      connection-test-query: SELECT 1 FROM DUAL
+#      connection-timeout: 30000000
+      maximum-pool-size: 40
+#      max-lifetime: 1800000
+#      minimum-idle: 5
+mybatis-plus:
+  configuration:
+    cache-enabled: off
+    local-cache-scope: statement
+    shrink-whitespaces-in-sql: true

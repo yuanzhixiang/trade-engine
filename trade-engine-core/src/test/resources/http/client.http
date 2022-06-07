@@ -1,0 +1,35 @@
+### 开启竞价引擎
+POST http://localhost:8080/financial/engine/openMatching?symbol=000001
+
+### 关闭竞价引擎
+POST http://localhost:8080/financial/engine/closeMatching?symbol=000001
+
+### 处理委托单
+POST http://localhost:8080/financial/engine/handleOrder
+Content-Type: application/json
+
+{
+  "id": 1,
+  "symbol": "000001",
+  "amount": 100,
+  "price": 1.66,
+  "action": "CREATE",
+  "side": "BUY"
+}
+
+### 发送委托单
+POST http://localhost:8080/financial/order/handleOrder
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "symbol": "000001",
+  "amount": 100,
+  "price": 1.65,
+  "action": "CREATE",
+  "side": "SELL",
+  "type": "LIMIT"
+}
+
+### 开始游戏
+POST http://localhost:8080/financial/game/startGame

@@ -1,0 +1,67 @@
+@startuml
+
+left to right direction
+
+:管理员: as manager
+:交易员: as trader
+
+' max action: manage_action_16
+package 管理域 {
+    usecase "新建标的" as manage_action_1
+    usecase "开启标的" as manage_action_2
+    usecase "关闭标的" as manage_action_3
+    usecase "编辑标的信息" as manage_action_4
+    usecase "删除标的" as manage_action_5
+
+    usecase "对标的的操作" as manage_action_11
+
+    manage_action_11 --> manage_action_1
+    manage_action_11 --> manage_action_2
+    manage_action_11 --> manage_action_3
+    manage_action_11 --> manage_action_4
+    manage_action_11 --> manage_action_5
+
+    usecase "创建账号" as manage_action_7
+    usecase "创建正常用户账号" as manage_action_8
+    usecase "创建机器人账号" as manage_action_9
+    usecase "查看账户持仓和资金情况" as manage_action_6
+    usecase "删除账户" as manage_action_10
+    usecase "增加账户对于某标的物的持仓" as manage_action_13
+    usecase "减少账户对于某标的物的持仓" as manage_action_14
+    usecase "增加账户资金" as manage_action_15
+    usecase "减少账户资金" as manage_action_16
+
+    usecase "对账户的操作" as manage_action_12
+
+    manage_action_12 --> manage_action_7
+    manage_action_12 --> manage_action_8
+    manage_action_12 --> manage_action_9
+    manage_action_12 --> manage_action_6
+    manage_action_12 --> manage_action_10
+    manage_action_12 --> manage_action_13
+    manage_action_12 --> manage_action_14
+    manage_action_12 --> manage_action_15
+    manage_action_12 --> manage_action_16
+}
+
+manager --> manage_action_11
+manager --> manage_action_12
+
+' max action: trade_action_6
+package 交易域 {
+  usecase "下买入单" as trade_action_1
+  usecase "下卖出单" as trade_action_2
+  usecase "查看标的 k 线图（1s、30s、60s）" as trade_action_3
+  usecase "查看当前可交易的标的列表" as trade_action_4
+  usecase "查看账户的持仓和资金情况" as trade_action_5
+  usecase "查看标的 k 线图处理出的缠论顶底图" as trade_action_6
+}
+
+trader --> trade_action_1
+trader --> trade_action_2
+trader --> trade_action_3
+trader --> trade_action_4
+trader --> trade_action_5
+trader --> trade_action_6
+
+@enduml
